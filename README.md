@@ -1,4 +1,4 @@
-# game_of_life
+# aka Conway's Teeny Tiny Game of Life On A Borderless Chessboard
 Conway's Game of Life + bitboards.
 
 This is a Rust port of a short Java program by Browne and Tavener (2012) that compacts an 8x8 representation of Conway's Game of Life into a 64 bit integer.
