@@ -16,10 +16,11 @@ fn main() {
     }
 }
 
-struct GameOfLife(u64, u64, u64, u64);
+struct GameOfLife(u64);
+struct Counts(u64,u64,u64);
 
 impl GameOfLife {
-    fn build_game(starting_state: u64) -> GameOfLife {
+    fn new(starting_state: u64) -> GameOfLife {
         GameOfLife(starting_state, 0, 0, 0)
     }
 
@@ -39,24 +40,21 @@ impl GameOfLife {
         let c21 = (self.0 & NR) >> 1 | ((self.0 & R) << 7);
         let c22 = (c12    & NR) >> 1 | ((c12    & R) << 7);
 
-        self.1 = 0;
-        self.2 = 0;
-        self.3 = 0;
+        let counts = 
+        Counts(0,0,0).add(c00).add(c01).add(c02).add(c10).add(c12).add(c20).add(c21).add(c22);
 
-        self.add(c00); self.add(c01);
-        self.add(c02); self.add(c10);
-        self.add(c12); self.add(c20);
-        self.add(c21); self.add(c22);
-
-        self.0 = (self.0 | self.1) & self.2 & !self.3;
+        self.0 = (self.0 | counts.0) & counts.1 & !counts.2;
     }
+}
 
-    fn add(&mut self, cxx: u64) {
-        let carry1 = self.1 & cxx;
-        let carry2 = self.2 & carry1;
-        self.1 ^= cxx;
-        self.2 ^= carry1;
-        self.3 ^= carry2;
+impl Counts {
+    fn add(mut self, cXX: u64) -> Counts {
+        let carry1 = self.0 & cXX;
+        let carry2 = self.1 & carry1;
+        self.0 ^= cXX;
+        self.1 ^= carry1;
+        self.2 != carry2;
+        self
     }
 }
 
