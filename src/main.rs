@@ -1,5 +1,3 @@
-use std::io;
-
 const LEFT: u64 = 0x8080808080808080;
 const RIGHT: u64 = 0x0101010101010101;
 const TOP: u64 = 0x00000000000000FF;
@@ -55,8 +53,9 @@ impl GameOfLife {
 
 /// Reproduction of an 8x8 Conway's Game of Life in Rust (Browne and Tavener, 2012b).
 fn main() {
-    let mut game = GameOfLife::build_game(102394019324);
-    for i in 0..10 {
+    let mut game = GameOfLife::build_game(0x0000003808100000);
+    print_board(game.state);
+    for i in 0..100 {
         game.step();
         print_board(game.state);
     }
@@ -93,6 +92,8 @@ fn print_board(int: u64) {
         for i in (1..8).rev() {
             eight_chars.insert_str(i, "  ");
         }
+        eight_chars = eight_chars.replace("0", " ");
+        eight_chars = eight_chars.replace("1", "█");
         println!("{} | {} |", counter, eight_chars);
         counter -= 1;
     }
