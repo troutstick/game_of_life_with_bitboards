@@ -21,7 +21,7 @@ struct Counts(u64,u64,u64);
 
 impl GameOfLife {
     fn new(starting_state: u64) -> GameOfLife {
-        GameOfLife(starting_state, 0, 0, 0)
+        GameOfLife(starting_state)
     }
 
     /// Return the game's current state.
