@@ -1,3 +1,6 @@
+extern crate time;
+use time::Instant;
+
 const L: u64 = 0x8080808080808080;
 const R: u64 = 0x0101010101010101;
 const T: u64 = 0x00000000000000FF;
@@ -7,13 +10,20 @@ const NR: u64 = 0xFEFEFEFEFEFEFEFE; // !RIGHT
 
 /// Reproduction of an 8x8 Conway's Game of Life in Rust (Browne and Tavener, 2012b).
 fn main() {
+    benchmark(1_000_000_000);
+}
+
+/// Measure the amount of time it takes to run INT steps.
+fn benchmark(int: u64) {
+    let start = Instant::now();
+
     let glider_state = 0x0000003808100000;
     let mut game = GameOfLife::build_game(glider_state);
-    print_board(game.state());
-    for i in 0..100 {
+    for _ in 0..int {
         game.step();
-        print_board(game.state());
     }
+
+    println!("It took {} seconds for the program to run {} steps.", start.elapsed().as_seconds_f64(), int)
 }
 
 struct GameOfLife(u64, u64, u64, u64);
